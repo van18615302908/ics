@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Y86 Simulator</title>
+        <link rel="stylesheet" type="text/css" href="./style.css" />
+        <script src="./script.js" async></script>
+            <style>
+        .search-container {
+            text-align: center;
+        }
+
+        #searchInput {
+            width: 300px; /* 设置输入框宽度，可根据需要调整 */
+            padding-left: 50px; /* 添加左侧内边距用于显示图标 */
+            background-image: url('data:image/svg+xml;utf8,<svg t="1703064650054" class="icon" viewBox="0 0 1975 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7134" width="20" height="20"><path d="M1933.276831 981.457416H42.542584V42.542584h1890.734247v938.914832" fill="#FFFFFF" p-id="7135"></path><path d="M1933.276831 1024H42.542584a42.542584 42.542584 0 0 1-42.542584-42.542584V42.542584a42.542584 42.542584 0 0 1 42.542584-42.542584h1890.734247a42.542584 42.542584 0 0 1 42.542585 42.542584v938.914832a42.542584 42.542584 0 0 1-42.542585 42.542584zM85.085168 938.914832h1805.649079V85.085168H85.085168z" fill="#888888" p-id="7136"></path><path d="M314.247888 266.174768h121.813599" fill="#FFFFFF" p-id="7137"></path><path d="M436.061487 308.717352h-121.813599a42.542584 42.542584 0 0 1 0-85.085168h121.813599a42.542584 42.542584 0 0 1 0 85.085168z" fill="#888888" p-id="7138"></path><path d="M314.247888 757.825232h121.813599" fill="#FFFFFF" p-id="7139"></path><path d="M436.061487 800.367816h-121.813599a42.542584 42.542584 0 1 1 0-85.085168h121.813599a42.542584 42.542584 0 0 1 0 85.085168z" fill="#888888" p-id="7140"></path><path d="M375.083783 301.626921v411.24498" fill="#FFFFFF" p-id="7141"></path><path d="M375.083783 755.414486a42.542584 42.542584 0 0 1-42.542584-42.542585v-411.24498a42.542584 42.542584 0 0 1 85.085169 0v411.24498a42.542584 42.542584 0 0 1-42.542585 42.542585z" fill="#888888" p-id="7142"></path></svg>');
+            background-repeat: no-repeat;
+            background-position: 10px center; /* 调整图标的位置 */
+        }
+
+        #search {
+            padding-left: 30px; /* 添加左侧内边距用于显示图标 */
+        }
+
+        /* Add more styles as needed */
+    </style>
+    </head>
+    <body style="background-image: url('beijing.JPG'); background-size: cover; background-position: center; background-repeat: no-repeat;"></body>
+    <body>
+        <!-- 页面布局 -->
+
+        <!-- 头部：标题与作者 -->
+        <div class="header">
+            <span >y86-64 Simulator</span>
+            <div id="author">@范意阳</div>
+        </div>
+
+        <div id="content"></div>
+        <div  class="footer">
+            <input type="file" id="file">
+
+            <!-- 在 "读取文件" 按钮中添加文件图标 -->
+            <button id="read" onclick="readJson(0)">
+                <svg t="1703060793112" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1877" width="16" height="16">
+                    <path d="M654.826667 117.333333l209.173333 209.173334V928h-704v-810.666667h494.826667zM586.666667 181.312h-362.666667V864h576v-469.333333h-213.333333V181.333333zM704 672v64H320v-64h384z m0-170.666667v64H320v-64h384z m-203.264-170.666666v64H320v-64h180.736z m276.928 0L650.666667 203.669333V330.666667h126.997333z" fill="#2c2c2c" p-id="1878"></path>
+                </svg>
+            
+            </button>
+
+
+            <!-- 在 "before" 按钮中添加左箭头的 SVG 图标 -->
+            <button id="last">
+                <svg t="1703060575842" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1871" width="14" height="16">
+                    <path d="M631.04 161.941333a42.666667 42.666667 0 0 1 63.061333 57.386667l-2.474666 2.730667-289.962667 292.245333 289.706667 287.402667a42.666667 42.666667 0 0 1 2.730666 57.6l-2.474666 2.752a42.666667 42.666667 0 0 1-57.6 2.709333l-2.752-2.474667-320-317.44a42.666667 42.666667 0 0 1-2.709334-57.6l2.474667-2.752 320-322.56z" fill="#111111" p-id="1872"></path>
+                </svg>
+                
+            </button>
+
+            <button id="next">
+                <svg t="1703060467773" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1728" width="16" height="16">
+                    <path d="M373.408 200.224a32 32 0 0 0-42.816 47.552l293.664 264.256-291.84 264.256a32 32 0 0 0-4.8 42.048l2.56 3.136a32 32 0 0 0 45.184 2.24l318.112-288a32 32 0 0 0-0.064-47.488l-320-288z" fill="#111111" p-id="1729"></path>
+                </svg>
+            
+            </button>
+            
+            <!-- 在 "Reset" 按钮中添加重置图标 -->
+            <button id="reset" onclick="resetForm()">
+                <svg t="1703060907493" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2062" width="16" height="16">
+                    <path d="M874.666667 489.877333v316.885334l-605.013334-0.021334 95.445334 95.424-45.248 45.269334-171.882667-171.904 171.797333-172.949334 45.418667 45.098667-94.442667 95.061333L810.666667 742.762667V489.877333h64zM726.613333 105.301333l171.904 171.882667-171.818666 172.949333-45.397334-45.098666 95.061334-95.722667H245.333333v252.885333h-64V245.333333l594.816-0.021333-94.784-94.762667 45.269334-45.248z" fill="#2c2c2c" p-id="2063"></path>
+                </svg>
+
+</button>
+
+        </div> 
+
+        <!-- 主体:所要显示的数据 -->
+        <div class="display">
+            <div  class="block">
+                <div class="block_title">PC</div>
+                <div class="entry_block">
+                    <div class="entry_content" id="PC">0</div>
+                </div>
+            </div>
+            <div  class="block">
+                <div class="block_title">STAT</div>
+                <div class="entry_block">
+                    <div class="entry_content" id="STAT">0</div>
+                </div>
+            </div>
+            <div  class="block">
+                <div class="block_title">CC</div>
+                  <div class="entry_block">
+                      <div class="entry_title">ZF</div>
+                      <div class="entry_content" id="ZF">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">SF</div>
+                      <div class="entry_content" id="SF">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">OF</div>
+                      <div class="entry_content" id="OF">0</div>
+                  </div>
+            </div>
+            <div  class="block">
+                <div class="block_title">MEM</div>
+                  <div class="entry_block">
+                      <div class="entry_title">MEM-0</div>
+                      <div class="entry_content" id="MEM0">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">MEM-8</div>
+                      <div class="entry_content" id="MEM8">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">MEM-16</div>
+                      <div class="entry_content" id="MEM16">0</div>
+                  </div>
+                  <div class="entry_block">
+                    <div class="entry_title">MEM-24</div>
+                    <div class="entry_content" id="MEM24">0</div>
+                </div>
+                <div class="entry_block">
+                    <div class="entry_title">MEM-32</div>
+                    <div class="entry_content" id="MEM32">0</div>
+                </div>    
+                <div class="entry_block">
+                    <div class="entry_title">MEM-40</div>
+                    <div class="entry_content" id="MEM40">0</div>
+                </div>            
+                <div class="entry_block">
+                    <div class="entry_title">MEM-48</div>
+                    <div class="entry_content" id="MEM48">0</div>
+                </div>
+                <div class="entry_block">
+                    <div class="entry_title">MEM-56</div>
+                    <div class="entry_content" id="MEM56">0</div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="block_title">REG</div>
+                  <div class="entry_block">
+                      <div class="entry_title">%rax</div>
+                      <div class="entry_content" id="RAX">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%rcx</div>
+                      <div class="entry_content" id="RCX">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%rdx</div>
+                      <div class="entry_content" id="RDX">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%rbx</div>
+                      <div class="entry_content" id="RBX">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%rsp</div>
+                      <div class="entry_content" id="RSP">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%rbp</div>
+                      <div class="entry_content" id="RBP">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%rsi</div>
+                      <div class="entry_content" id="RSI">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%rdi</div>
+                      <div class="entry_content" id="RDI">0</div>
+                  </div>
+            </div>
+            <div class="block">
+                <div class="block_title">REG</div>
+                  <div class="entry_block">
+                      <div class="entry_title">%r8</div>
+                      <div class="entry_content" id="R8">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%r9</div>
+                      <div class="entry_content" id="R9">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%r10</div>
+                      <div class="entry_content" id="R10">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%r11</div>
+                      <div class="entry_content" id="R11">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%r12</div>
+                      <div class="entry_content" id="R12">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%r13</div>
+                      <div class="entry_content" id="R13">0</div>
+                  </div>
+                  <div class="entry_block">
+                      <div class="entry_title">%r14</div>
+                      <div class="entry_content" id="R14">0</div>
+                  </div>
+            </div>
+            <div class="block">
+                <div class="block_title">cache</div>
+                <div class="entry_block">
+                    <div class="entry_title">hit: </div>
+                    <div class="entry_content" id="hit">0</div>
+                </div>
+                <div class="entry_block">
+                    <div class="entry_title">miss: </div>
+                    <div class="entry_content" id="miss">0</div>
+                </div>
+                <div class="entry_block">
+                    <div class="entry_title">eviction: </div>
+                    <div class="entry_content" id="eviction">0</div>
+                </div>
+            </div>
+            
+        </div>
+
+<!-- Add this section in the body of your HTML -->
+<!-- <button id="search" onclick="searchMEM()">Search</button> -->
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search MEM index...">
+    <button id="search" onclick="searchMEM()">
+        <!-- SVG icon for search button -->
+        <svg t="1703064224469" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4275" width="30" height="20">
+            <path d="M966.4 924.8l-230.4-227.2c60.8-67.2 96-156.8 96-256 0-217.6-176-390.4-390.4-390.4-217.6 0-390.4 176-390.4 390.4 0 217.6 176 390.4 390.4 390.4 99.2 0 188.8-35.2 256-96l230.4 227.2c9.6 9.6 28.8 9.6 38.4 0C979.2 950.4 979.2 934.4 966.4 924.8zM102.4 441.6c0-185.6 150.4-339.2 339.2-339.2s339.2 150.4 339.2 339.2c0 89.6-35.2 172.8-92.8 233.6-3.2 0-3.2 3.2-6.4 3.2-3.2 3.2-3.2 3.2-3.2 6.4-60.8 57.6-144 92.8-233.6 92.8C256 780.8 102.4 627.2 102.4 441.6z" p-id="4276"></path>
+        </svg>
+        <!-- End of SVG icon for search button -->
+    </button>
+</div>
+
+<div class="text">一只可爱的猫猫⬇️</div>
+
+        <div class="image-container">
+            <img src="miaomiao.jpg" alt="Miaomiao Image" style="max-width: 300px; height: auto;">
+        </div>
+    </div>
+        <img src="https://van-1322764606.cos.ap-shanghai.myqcloud.com/202312210207946.png" alt="Your Image Description" style="max-width: 600px; height: auto;">
+    </div>
+    </body>
+</html>
